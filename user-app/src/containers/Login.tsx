@@ -11,6 +11,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router';
 
 const re = /^[a-z0-9](?!.*?[^\na-z0-9]{2})[^\s@]+@[^\s@]+\.[^\s@]+[a-z0-9]$/
+const API_URL = 'http://localhost:8080/api/v0'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,7 +30,8 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
       flexDirection: 'column',
       boxShadow: '4px 4px 10px 6px rgba(0,0,0,.2)', 
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      marginTop: 20
     },
     cardContent: {
         display: 'flex', 
@@ -88,7 +90,7 @@ export default () => {
     setLoading(true)
     try {
       let {data} = await axios({
-        url: 'http://localhost:8080/api/v0/authenticate',
+        url: `${API_URL}/authenticate`,
         method: 'post',
         data: { email, password }
       })
@@ -96,13 +98,15 @@ export default () => {
       push('/home')
     } catch (error) {
       setLoading(false)
+      setEmailValid(false)
       cleanInputs()
+      setErrorEmail("Datos incorrectos. vuelve a intertarlo!")
     }
   }
 
   return (
     <Grid className={classes.root}>
-      <img src="/logo.png"  />
+      <img height="200" src="/logo.png"  />
       <Card className={classes.card}>
         <CardContent className={classes.cardContent}>
           <TextField 
@@ -112,6 +116,7 @@ export default () => {
             placeholder="email@dominio.com"
             variant="outlined" 
             type="email"
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
             error={errorEmail != ''}
             helperText={errorEmail}
@@ -124,7 +129,10 @@ export default () => {
                 placeholder="******" 
                 variant="outlined"
                 type="password"
+                value={password}
                 className={classes.input}
+                error={errorEmail != ''}
+                helperText={errorEmail}
                 onChange={(e) => setPassword(e.target.value)}
               />
           }

@@ -10,6 +10,8 @@ import axios from 'axios';
 import { useHistory } from 'react-router';
 import { Avatar, Typography, AppBar, Toolbar } from '@material-ui/core';
 
+const API_URL = 'http://localhost:8080/api/v0'
+
 interface User {
   id: string;
 	avatar: string;
@@ -76,7 +78,7 @@ export default () => {
     setLoading(true)
     try {
       let {data} = await axios({
-        url: `http://localhost:8080/api/v0/users/me?token=${token}`,
+        url: `${API_URL}/users/me?token=${token}`,
         method: 'get',
       })
       setLoading(false)
