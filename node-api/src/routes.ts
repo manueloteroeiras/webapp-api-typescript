@@ -1,10 +1,11 @@
 import { Router } from 'express'
 
-import {index} from './controllers/Users'
+import {authenticate, getMe} from './controllers/Users'
 
 const router: Router = Router()
 
-router.get('/', index)
+router.post('/authenticate', authenticate)
+router.get('/users/me', getMe)
 
 export = router
 
